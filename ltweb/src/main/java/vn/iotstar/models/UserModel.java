@@ -1,117 +1,38 @@
-package vn.iotstar.models;
+package vn.iotstar.services.impl;
 
-import java.io.Serializable;
-import java.sql.Date;
+import vn.iotstar.dao.IUserDao;
+import vn.iotstar.dao.impl.UserDaoImpl;
+import vn.iotstar.models.UserModel;
+import vn.iotstar.services.IUserService;
 
-public class UserModel implements Serializable {
+public class UserServiceImpl implements IUserService {
+	// lấy tất cả hàm trong tầng Dao
+	IUserDao userDao = new UserDaoImpl();
 
-	private static final long serialVersionUID = -37462121977501929L;
+	@Override
+	public UserModel login(String username, String password) {
 
-	private int id;
-	private String username;
-	private String password;
-	private String images;
-	private String fullname;
-	private String email;
-	private String phone;
-	private int roleid;
-	private Date createdate;
+		UserModel user = this.findByUsername(username);
 
-	public UserModel() {
-		super();
-	}
-
-	public UserModel(int id, String username, String password, String images, String fullname, String email,
-			String phone, int roleid, Date createdate) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.images = images;
-		this.fullname = fullname;
-		this.email = email;
-		this.phone = phone;
-		this.roleid = roleid;
-		this.createdate = createdate;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getImages() {
-		return images;
-	}
-
-	public void setImages(String images) {
-		this.images = images;
-	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public int getRoleid() {
-		return roleid;
-	}
-
-	public void setRoleid(int roleid) {
-		this.roleid = roleid;
-	}
-
-	public Date getCreatedate() {
-		return createdate;
-	}
-
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
+		if (user != null && password.equals(user.getPassword())) {
+			return user;
+		}
+		return null;
 	}
 
 	@Override
-	public String toString() {
-		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", images=" + images
-				+ ", fullname=" + fullname + ", email=" + email + ", phone=" + phone + ", roleid=" + roleid
-				+ ", createdate=" + createdate + "]";
+	public UserModel findByUsername(String username) {
+
+		return userDao.findByUsername(username);
 	}
 
+	public static void main(String[] args) {
+
+		IUserService userDao = new UserServiceImpl();
+		System.out.println(userDao.findByUsername("trungnh"));
+		// List<UserModel> list = userDao.findAll();
+		// for (UserModel user : list) {
+		// System.out.println(user);
+		// }
+	}
 }

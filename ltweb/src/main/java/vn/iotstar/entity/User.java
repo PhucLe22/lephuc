@@ -1,3 +1,4 @@
+
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
